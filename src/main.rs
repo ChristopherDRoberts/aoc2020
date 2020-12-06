@@ -1,7 +1,7 @@
 use std::env;
-mod day3;
+mod day5;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    day3::solve(&args[1]);
+    day5::solve(&args[1]);
 }
