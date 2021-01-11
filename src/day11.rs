@@ -14,33 +14,23 @@ fn read_input(path: &str) -> Vec<Vec<char>> {
 }
 
 fn part1(grid: &Vec<Vec<char>>) -> usize {
+    solve_impl(&grid, empty_rule, occupied_rule)
+}
+
+fn part2(grid: &Vec<Vec<char>>) -> usize {
+    solve_impl(&grid, empty_rule_line_of_sight, occupied_rule_line_of_sight)
+}
+
+fn solve_impl(
+    grid: &Vec<Vec<char>>,
+    empty_rule: fn(isize, isize, &Vec<Vec<char>>) -> bool,
+    occupied_rule: fn(isize, isize, &Vec<Vec<char>>) -> bool,
+) -> usize {
     let mut prev_grid = grid.clone();
     let mut next_grid = evolve_grid(&prev_grid, empty_rule, occupied_rule);
     while !stabilised(&prev_grid, &next_grid) {
         prev_grid = next_grid;
         next_grid = evolve_grid(&prev_grid, empty_rule, occupied_rule);
-    }
-    next_grid
-        .into_iter()
-        .flatten()
-        .filter(|pos| *pos == '#')
-        .count()
-}
-
-fn part2(grid: &Vec<Vec<char>>) -> usize {
-    let mut prev_grid = grid.clone();
-    let mut next_grid = evolve_grid(
-        &prev_grid,
-        empty_rule_line_of_sight,
-        occupied_rule_line_of_sight,
-    );
-    while !stabilised(&prev_grid, &next_grid) {
-        prev_grid = next_grid;
-        next_grid = evolve_grid(
-            &prev_grid,
-            empty_rule_line_of_sight,
-            occupied_rule_line_of_sight,
-        );
     }
     next_grid
         .into_iter()
